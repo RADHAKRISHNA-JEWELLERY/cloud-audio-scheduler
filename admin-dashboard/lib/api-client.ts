@@ -230,6 +230,13 @@ export async function updateDevice(id: string, data: any): Promise<ApiResponse<a
   })
 }
 
+export async function updateDeviceVolume(id: string, volume: number): Promise<ApiResponse<any>> {
+  return apiFetch(`devices/${id}/volume`, {
+    method: "POST",
+    body: JSON.stringify({ volume }),
+  })
+}
+
 export async function deleteDevice(id: string): Promise<ApiResponse<any>> {
   return apiFetch(`devices/${id}`, {
     method: "DELETE",

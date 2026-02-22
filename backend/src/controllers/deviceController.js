@@ -85,6 +85,22 @@ const deviceController = {
     }
   },
 
+
+  async updateVolume(req, res) {
+    try {
+      const device = await deviceService.updateDeviceVolume(req.params.id, req.body);
+      res.status(200).json({
+        success: true,
+        data: device
+      });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message: error.message
+      });
+    }
+  },
+
   async delete(req, res) {
     try {
       const result = await deviceService.deleteDevice(req.params.id);

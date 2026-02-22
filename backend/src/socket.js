@@ -34,6 +34,11 @@ module.exports = (io) => {
 
         console.log(`🔌 Device connected: ${device.device_code}`);
 
+        socket.emit('command', {
+            type: "VOLUME",
+            masterVolume: device.master_volume,
+            branchVolume: device.branch_volume
+        });
 
         const schedule = await scheduleService.getDeviceSchedule(device.device_code);
 

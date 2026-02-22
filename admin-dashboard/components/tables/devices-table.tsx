@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Edit2, Trash2, Plus, Circle } from "lucide-react"
 import { checkPermission } from "@/lib/rbac"
 import { formatDistanceToNow } from "date-fns"
+import { VolumeControl } from "../ui/volume-controller"
 
 interface DevicesTableProps {
   devices: Device[]
@@ -56,6 +57,7 @@ export function DevicesTable({
                 <TableHead>Device Name</TableHead>
                 <TableHead>Branch</TableHead>
                 <TableHead>Status</TableHead>
+                <TableHead>Volume</TableHead>
                 <TableHead>Last Seen</TableHead>
                 {canModify && <TableHead className="text-right">Actions</TableHead>}
               </TableRow>
@@ -69,6 +71,7 @@ export function DevicesTable({
                 </TableRow>
               ) : (
                 devices.map((device) => (
+
                   <TableRow key={device.id}>
                     <TableCell className="font-medium">{device.device_code}</TableCell>
                     <TableCell>{device.device_name}</TableCell>
@@ -83,6 +86,9 @@ export function DevicesTable({
                         />
                         {device.status}
                       </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <VolumeControl device={device} disabled={device.status !== "ONLINE"} />
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
                       {formatDistanceToNow(new Date(device.last_seen), { addSuffix: true })}

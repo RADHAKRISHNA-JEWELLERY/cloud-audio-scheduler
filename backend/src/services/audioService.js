@@ -24,7 +24,7 @@ class AudioService {
       const duration = await audioProcessor.getAudioDuration(file.path);
 
       // Build file URL (adjust for your deployment)
-      const fileUrl = `/uploads/audio/${file.filename}`;
+      const fileUrl = `uploads/audio/${file.filename}`;
 
       const audioData = {
         title: data.title,
@@ -112,7 +112,7 @@ class AudioService {
         // Get new audio duration
         const duration = await audioProcessor.getAudioDuration(file.path);
 
-        updateData.file_url = `/uploads/audio/${file.filename}`;
+        updateData.file_url = `uploads/audio/${file.filename}`;
         updateData.file_path = file.path;
         updateData.duration_seconds = duration;
 

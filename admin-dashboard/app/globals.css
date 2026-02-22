@@ -182,6 +182,24 @@
   }
 
 
+  .control-btn {
+
+    padding: 6px;
+
+    border-radius: 6px;
+
+    border: 1px solid var(--border);
+
+    cursor: pointer;
+
+  }
+
+  .control-btn:hover {
+
+    background: var(--muted);
+
+  }
+
 
 
   * {

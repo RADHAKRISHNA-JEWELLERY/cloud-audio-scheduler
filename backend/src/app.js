@@ -19,11 +19,15 @@ app.use(cors({
   credentials: true
 }));
 
+const isDev = process.env.NODE_ENV === 'development';
+
 // Rate limiting
 const limiter = rateLimit({
   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
-  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100,
-  message: { success: false, message: 'Too many requests, please try again later.' }
+  max: isDev ? 2000 : (parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 1000),
+  message: { success: false, message: 'Too many requests, please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 
 app.use('/api/', limiter); // Apply only to API routes

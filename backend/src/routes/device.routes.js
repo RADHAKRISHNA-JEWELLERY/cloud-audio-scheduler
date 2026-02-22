@@ -84,6 +84,13 @@ router.delete('/:id',
   deviceController.delete
 );
 
+router.post('/:id/volume',
+  authenticate,
+  authorize('SUPER_ADMIN', 'ADMIN'),
+  validateParams(schemas.idParamSchema),
+  deviceController.updateVolume
+);
+
 
 
 module.exports = router;

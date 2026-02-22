@@ -178,6 +178,34 @@ class DeviceService {
     }
   }
 
+
+  async updateDeviceVolume(id, data) {
+    logger.debug('DeviceService.updateDeviceVolume - Starting', { id, data });
+    try {
+      const device = await Device.findByPk(id);
+      if (!device) {
+        logger.error('DeviceService.updateDeviceVolume - Device not found', { id });
+        throw new Error('Device not found');
+      }
+
+      await device.update({
+        master_volume: data.volume,
+        branch_volume: 100
+      });
+
+      global.sendToDevice(device.id, {
+        type: "VOLUME",
+        masterVolume: data.volume,
+        branchVolume: 100
+      });
+      logger.debug('DeviceService.updateDeviceVolume - Success', { id });
+      return device.toJSON();
+    } catch (error) {
+      logger.error('DeviceService.updateDeviceVolume - Error', { id, error: error.message, stack: error.stack });
+      throw error;
+    }
+  }
+
   async deleteDevice(id) {
     logger.debug('DeviceService.deleteDevice - Starting', { id });
     try {

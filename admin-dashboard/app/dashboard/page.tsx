@@ -100,7 +100,7 @@ export default function DashboardPage() {
       </header>
 
       {/* 2. STATS GRID */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         <StatCard
           title="Total Branches"
           value={stats?.totalBranches}
@@ -120,13 +120,13 @@ export default function DashboardPage() {
           color="text-green-600"
           description="Ready for playback"
         />
-        <StatCard
+        {/* <StatCard
           title="Prayer Automation"
           value={stats?.prayerConfigured ? "Active" : "Disabled"}
           icon={<Clock className="w-5 h-5 text-orange-500" />}
           color={stats?.prayerConfigured ? "text-orange-600" : "text-muted-foreground"}
           description="Schedule integrity"
-        />
+        /> */}
       </div>
 
       {/* 3. BRANCH MONITORING (The 3-Column Grid Layout) */}
