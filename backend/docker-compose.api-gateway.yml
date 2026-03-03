@@ -3,14 +3,14 @@ name: traefik
 
 services:
   traefik:
-    image: traefik:latest
+    image: traefik:v3.0
+    restart: unless-stopped
     command: 
       - --api=true
       - --api.dashboard=true
       - --log.level=DEBUG
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
-      - --entrypoints.traefik.address=:3000
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
       - --certificatesresolvers.cert-resolver.acme.httpchallenge=true
@@ -21,11 +21,10 @@ services:
       - --entrypoints.web.http.redirections.entrypoint.scheme=https
 
     volumes:
-      - ./var/run/docker.sock:/var/run/docker.sock:ro    
+      - /var/run/docker.sock:/var/run/docker.sock:ro    
       - ./certificates/letsencrypt:/letsencrypt
     labels:
       - traefik.enable: true
-      - traefik.port: 3000
       - traefik.http.routers.api.entrypoints: 'websecure'
       - traefik.http.routers.api.service: 'api@internal'
       - traefik.http.routers.api.tls.certresolver: 'cert-resolver'

@@ -5,20 +5,24 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    deploy:
-      replicas: 3
+    restart: unless-stopped
+    expose:
+      - "3000"
     networks:
       - internal
   
 
   caddy:
-    image: caddy:latest
+    image: caddy:2-alpine
+    restart: unless-stopped
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./caddy_logs:/var/log/caddy
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.cas-router.rule=Host(`api.redio.radhakrishnajewellery.in`)"
-      - "traefik.http.services.cas-router.loadbalancer.server.port=80"
+      - "traefik.http.routers.cas-router.service=cas-service"
+      - "traefik.http.services.cas-service.loadbalancer.server.port=80"
       - "traefik.http.routers.cas-router.entrypoints=websecure"
       - "traefik.http.routers.cas-router.tls=true"
       - "traefik.http.routers.cas-router.tls.certresolver=cert-resolver"
@@ -26,6 +30,31 @@ services:
     networks:
       - internal
       - cas-network
+
+  db:
+    image: mysql:8.0
+    container_name: mysql_cas_db
+    restart: unless-stopped
+    environment:
+      # Set your desired root password here
+      MYSQL_ROOT_PASSWORD: dbpass
+      # Create an initial database named 'caas_db'
+      MYSQL_DATABASE: cloud_audio_scheduler
+      MYSQL_USER: cas_user
+      MYSQL_PASSWORD: dbpass
+
+    volumes:
+      # Persistent storage for your database data
+      - db_data:/var/lib/mysql
+      # Mount the schema file so the container can access it
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
+    networks:
+      - internal
+
+volumes:
+  db_data:
+    driver: local
 
 networks:
   internal:

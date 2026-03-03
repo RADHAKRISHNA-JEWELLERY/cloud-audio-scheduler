@@ -30,6 +30,11 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
+
 app.use('/api/', limiter); // Apply only to API routes
 
 // Logging

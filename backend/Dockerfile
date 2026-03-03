@@ -51,5 +51,7 @@ ENV NODE_ENV=production
 EXPOSE 3000
 
 ENTRYPOINT ["dumb-init", "--"]
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD wget --spider -q http://localhost:3000/health || exit 1
 
 CMD ["node", "src/server.js"]
